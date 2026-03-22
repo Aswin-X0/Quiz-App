@@ -22,9 +22,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/vibes/home").permitAll()
-                .requestMatchers("/Brainstorm/**").permitAll()
-                .requestMatchers("/quiz/**").permitAll()  
+                .requestMatchers("/Brainstorm/home").permitAll()
+                .requestMatchers("/Brainstorm/signup").permitAll()
+                .requestMatchers("/Brainstorm/login").permitAll()  
                 .requestMatchers("/Questions/**").permitAll()  
                 .requestMatchers("/attempts/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
