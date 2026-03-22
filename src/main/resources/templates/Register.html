@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Register</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --accent: #10B981;
+            --dark: #111827;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.15) 22%, transparent 40%),
+                radial-gradient(circle at top right, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.10) 20%, transparent 38%),
+                linear-gradient(135deg, #dff6ff 0%, #bfe9ff 35%, #9ad9ff 70%, #c8f1ff 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+            color: #111827;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            border-radius: 9999px;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 280px;
+            height: 280px;
+            top: 80px;
+            left: 60px;
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        body::after {
+            width: 320px;
+            height: 320px;
+            bottom: 60px;
+            right: 80px;
+            background: rgba(125, 211, 252, 0.35);
+        }
+
+        .text-primary-custom {
+            color: var(--primary) !important;
+        }
+
+        .text-accent-custom {
+            color: var(--accent) !important;
+        }
+
+        .text-dark-custom {
+            color: var(--dark) !important;
+        }
+
+        .bg-primary-custom {
+            background-color: var(--primary) !important;
+        }
+
+        .border-primary-custom {
+            border-color: rgba(79, 70, 229, 0.3) !important;
+        }
+
+        .header-glass {
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 10px 35px rgba(31, 38, 135, 0.16);
+            border-radius: 2rem;
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            color: #111827;
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+        }
+
+        .glass-input::placeholder {
+            color: rgba(17, 24, 39, 0.55);
+        }
+
+        .glass-input:focus {
+            outline: none;
+            border-color: rgba(79, 70, 229, 0.8);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.14);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .glossy-pill {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            border-radius: 999px;
+            background: linear-gradient(
+                180deg,
+                rgba(255,255,255,0.55) 0%,
+                rgba(255,255,255,0.18) 100%
+            );
+            border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .btn-signin {
+            padding: 0.625rem 1.25rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            background: rgba(255, 255, 255, 0.3);
+            transition: 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-signin:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--primary);
+        }
+
+        .btn-submit-custom {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+            background: var(--primary);
+            border: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            transition: 0.3s ease;
+        }
+
+        .btn-submit-custom:hover {
+            background: #4338ca;
+        }
+
+        .error-box {
+            border-radius: 1rem;
+            border: 1px solid rgba(252, 165, 165, 0.4);
+            background: rgba(254, 226, 226, 0.5);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #b91c1c;
+        }
+
+        .main-wrapper {
+            min-height: calc(100vh - 80px);
+            position: relative;
+            z-index: 10;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        @media (min-width: 768px) {
+            .register-title {
+                font-size: 2.25rem;
+            }
+
+            .glass-card {
+                padding: 2.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-glass">
+        <nav class="container py-3 py-md-4 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <svg width="32" height="32" class="text-primary-custom" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                    </path>
+                </svg>
+                <span class="fs-3 fw-bold text-dark-custom">
+                    BRAIN<span class="text-primary-custom">STORM</span>
+                </span>
+            </div>
+
+            <a th:href="@{/Brainstorm/login}" class="btn-signin">
+                Sign In
+            </a>
+        </nav>
+    </header>
+
+    <main class="main-wrapper d-flex align-items-center justify-content-center px-3 px-md-4">
+        <div class="w-100" style="max-width: 576px;">
+            <div class="glass-card p-4 p-md-5">
+                <div class="mb-4">
+                    <span class="glossy-pill text-accent-custom">
+                        Register
+                    </span>
+                    <h2 class="mt-3 register-title">
+                        Build your profile
+                    </h2>
+                    <p class="mt-2 text-secondary" style="--bs-text-opacity: 1; color: #374151 !important;">
+                        Fill in your details and begin mastering your mind.
+                    </p>
+                </div>
+
+                <form th:action="@{/Brainstorm/signup}" th:object="${urequest}" method="post">
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium" style="color:#1f2937;">Full Name</label>
+                            <input type="text"
+                                   th:field="*{name}"
+                                   placeholder="Enter your full name"
+                                   class="form-control glass-input" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium" style="color:#1f2937;">Age</label>
+                            <input type="number"
+                                   th:field="*{age}"
+                                   placeholder="Enter your age"
+                                   class="form-control glass-input" />
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium" style="color:#1f2937;">Phone Number</label>
+                            <input type="text"
+                                   th:field="*{number}"
+                                   placeholder="Enter your number"
+                                   class="form-control glass-input" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium" style="color:#1f2937;">Email Address</label>
+                            <input type="email"
+                                   th:field="*{email}"
+                                   placeholder="Enter your email"
+                                   class="form-control glass-input" />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-medium" style="color:#1f2937;">Username</label>
+                        <input type="text"
+                               th:field="*{username}"
+                               placeholder="Choose a username"
+                               class="form-control glass-input" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-medium" style="color:#1f2937;">Password</label>
+                        <input type="password"
+                               th:field="*{password}"
+                               placeholder="Create a secure password"
+                               class="form-control glass-input" />
+                    </div>
+
+                    <div th:if="${error}" class="error-box mb-4">
+                        <span th:text="${error}"></span>
+                    </div>
+                    <button type="submit" class="btn-submit-custom">
+                        Create Account
+                    </button>
+
+                    <p class="text-center small pt-3 mb-0" style="color:#374151;">
+                        Already have an account?
+                        <a th:href="@{/Brainstorm/login}"
+                           class="fw-semibold text-decoration-none text-primary-custom"
+                           style="transition:0.3s;">
+                            Login
+                        </a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
